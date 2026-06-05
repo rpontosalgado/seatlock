@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2021",
+    "esModuleInterop": true,
+    "strict": true,
+    "types": ["node"],
+    "resolveJsonModule": true,
+    "composite": true
+  },
+  "include": ["prisma.config.ts", "prisma/**/*.ts"]
+}
