@@ -3,5 +3,6 @@ PRD.md
 openspec/
 /node_modules/
 /dist/
+*.tsbuildinfo
 .env
 /src/generated/prisma
