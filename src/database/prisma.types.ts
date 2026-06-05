@@ -1,0 +1,1 @@
+export { PrismaClient, SeatStatus, ReservationStatus, Prisma } from '../generated/prisma/client.js';

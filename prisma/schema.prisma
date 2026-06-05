@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SeatStatus {
+  available
+  reserved
+  sold
+}
+
+enum ReservationStatus {
+  pending
+  confirmed
+  expired
+  cancelled
+}
+
+model Movie {
+  id               String    @id @default(uuid())
+  title            String    @db.VarChar(200)
+  duration_minutes Int
+  sessions         Session[]
+
+  @@map("movies")
+}
+
+model Room {
+  id       String    @id @default(uuid())
+  name     String    @db.VarChar(50)
+  sessions Session[]
+
+  @@map("rooms")
+}
+
+model Session {
+  id          String    @id @default(uuid())
+  movie_id    String
+  room_id     String
+  start_time  DateTime
+  price_cents Int
+  movie       Movie     @relation(fields: [movie_id], references: [id])
+  room        Room      @relation(fields: [room_id], references: [id])
+  seats        Seat[]
+  reservations Reservation[]
+
+  @@map("sessions")
+}
+
+model Seat {
+  id           String           @id @default(uuid())
+  session_id   String
+  row_label    String           @db.Char(1)
+  seat_number  Int              @db.SmallInt
+  status       SeatStatus       @default(available)
+  session      Session          @relation(fields: [session_id], references: [id])
+  reservations Reservation[]
+  sales        Sale[]
+
+  @@unique([session_id, row_label, seat_number])
+  @@map("seats")
+}
+
+model Reservation {
+  id              String            @id @default(uuid())
+  seat_id         String
+  user_id         String            @db.VarChar(100)
+  status          ReservationStatus @default(pending)
+  idempotency_key String
+  session_id      String
+  created_at      DateTime          @default(now())
+  expires_at      DateTime
+  seat             Seat              @relation(fields: [seat_id], references: [id])
+  session          Session           @relation(fields: [session_id], references: [id])
+  sale             Sale?
+
+  @@unique([user_id, session_id, idempotency_key])
+  @@index([expires_at])
+  @@map("reservations")
+}
+
+model Sale {
+  id              String      @id @default(uuid())
+  reservation_id  String      @unique
+  seat_id         String
+  user_id         String      @db.VarChar(100)
+  amount_cents    Int
+  confirmed_at    DateTime    @default(now())
+  reservation     Reservation @relation(fields: [reservation_id], references: [id])
+  seat            Seat        @relation(fields: [seat_id], references: [id])
+
+  @@map("sales")
+}
