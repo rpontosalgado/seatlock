@@ -1,0 +1,7 @@
+PRD.md
+.opencode/
+openspec/
+/node_modules/
+/dist/
+.env
+/src/generated/prisma
