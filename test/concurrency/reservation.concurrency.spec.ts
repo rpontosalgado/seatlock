@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { PrismaService } from '../../src/database/prisma.service';
 
 describe('Concurrency Tests', () => {

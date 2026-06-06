@@ -1,9 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { PrismaClient } = require('../src/generated/prisma/client.js') as {
-  PrismaClient: new () => any;
-};
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from '../src/generated/prisma/client.js';
 
-const prisma = new PrismaClient() as any;
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const movie = await prisma.movie.create({

@@ -30,6 +30,7 @@
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.9.1",
+    "@types/pg": "^8.20.0",
     "@types/supertest": "^7.2.0",
     "@typescript-eslint/eslint-plugin": "^8.60.1",
     "@typescript-eslint/parser": "^8.60.1",
@@ -45,67 +46,91 @@
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
   },
   "jest": {
     "projects": [
       {
         "displayName": "unit",
-        "moduleFileExtensions": ["js", "json", "ts"],
+        "moduleFileExtensions": [
+          "js",
+          "json",
+          "ts"
+        ],
         "rootDir": ".",
         "testRegex": ".*\\.spec\\.ts$",
         "transform": {
           "^.+\\.(t|j)s$": "ts-jest"
         },
-        "collectCoverageFrom": ["src/**/*.(t|j)s"],
+        "collectCoverageFrom": [
+          "src/**/*.(t|j)s"
+        ],
         "coverageDirectory": "./coverage",
         "testEnvironment": "node",
-        "roots": ["<rootDir>/src/"],
+        "roots": [
+          "<rootDir>/src/"
+        ],
         "moduleNameMapper": {
           "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
         }
       },
       {
         "displayName": "integration",
-        "moduleFileExtensions": ["js", "json", "ts"],
+        "moduleFileExtensions": [
+          "js",
+          "json",
+          "ts"
+        ],
         "rootDir": ".",
         "testRegex": ".integration.spec.ts$",
         "transform": {
           "^.+\\.(t|j)s$": "ts-jest"
         },
         "testEnvironment": "node",
-        "roots": ["<rootDir>/test/integration/"],
+        "roots": [
+          "<rootDir>/test/integration/"
+        ],
         "moduleNameMapper": {
           "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
         }
       },
       {
         "displayName": "e2e",
-        "moduleFileExtensions": ["js", "json", "ts"],
+        "moduleFileExtensions": [
+          "js",
+          "json",
+          "ts"
+        ],
         "rootDir": ".",
         "testRegex": ".e2e-spec.ts$",
         "transform": {
           "^.+\\.(t|j)s$": "ts-jest"
         },
         "testEnvironment": "node",
-        "roots": ["<rootDir>/test/e2e/"],
+        "roots": [
+          "<rootDir>/test/e2e/"
+        ],
         "moduleNameMapper": {
           "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
         }
       },
       {
         "displayName": "concurrency",
-        "moduleFileExtensions": ["js", "json", "ts"],
+        "moduleFileExtensions": [
+          "js",
+          "json",
+          "ts"
+        ],
         "rootDir": ".",
         "testRegex": ".concurrency.spec.ts$",
         "transform": {
           "^.+\\.(t|j)s$": "ts-jest"
         },
         "testEnvironment": "node",
-        "roots": ["<rootDir>/test/concurrency/"],
+        "roots": [
+          "<rootDir>/test/concurrency/"
+        ],
         "moduleNameMapper": {
           "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
         }
@@ -123,11 +148,13 @@
     "@nestjs/core": "^11.1.24",
     "@nestjs/platform-express": "^11.1.24",
     "@nestjs/terminus": "^11.1.1",
+    "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "ioredis": "^5.11.1",
     "kafkajs": "^2.2.4",
+    "pg": "^8.21.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
   }
