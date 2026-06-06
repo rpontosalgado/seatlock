@@ -1,21 +1,25 @@
-import { PrismaClient } from '../../src/generated/prisma/client.js';
+import { PrismaService } from '../../src/database/prisma.service';
 
 describe('Concurrency Tests', () => {
-  it('should use SELECT FOR UPDATE for row-level locking', async () => {
-    const prisma = new PrismaClient();
+  let prisma: PrismaService;
+
+  beforeAll(async () => {
+    prisma = new PrismaService();
     await prisma.$connect();
+  });
 
-    try {
-      const lockedSeats = await prisma.$queryRaw<Array<{ id: string; status: string }>>`
-        SELECT id, status FROM seats
-        WHERE id = ANY(ARRAY[]::uuid[])
-        ORDER BY id ASC
-        FOR UPDATE
-      `;
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
 
-      expect(Array.isArray(lockedSeats)).toBe(true);
-    } finally {
-      await prisma.$disconnect();
-    }
+  it('should use SELECT FOR UPDATE for row-level locking', async () => {
+    const lockedSeats = await prisma.$queryRaw<Array<{ id: string; status: string }>>`
+      SELECT id, status FROM seats
+      WHERE id = ANY(ARRAY[]::uuid[])
+      ORDER BY id ASC
+      FOR UPDATE
+    `;
+
+    expect(Array.isArray(lockedSeats)).toBe(true);
   });
 });

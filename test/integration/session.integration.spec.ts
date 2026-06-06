@@ -1,15 +1,10 @@
-import { Test } from '@nestjs/testing';
-import { PrismaClient } from '../../src/generated/prisma/client.js';
 import { PrismaService } from '../../src/database/prisma.service';
-import { SessionsService } from '../../src/sessions/sessions.service';
-import { ReservationsService } from '../../src/reservations/reservations.service';
-import { PaymentsService } from '../../src/payments/payments.service';
 
-describe('Integration Tests', () => {
-  let prisma: PrismaClient;
+describe('Integration: Session', () => {
+  let prisma: PrismaService;
 
   beforeAll(async () => {
-    prisma = new PrismaClient();
+    prisma = new PrismaService();
     await prisma.$connect();
   });
 
@@ -22,8 +17,8 @@ describe('Integration Tests', () => {
     await prisma.reservation.deleteMany();
     await prisma.seat.deleteMany();
     await prisma.session.deleteMany();
-    await prisma.movie.deleteMany();
     await prisma.room.deleteMany();
+    await prisma.movie.deleteMany();
   });
 
   it('should create a session and verify persistence', async () => {

@@ -1,4 +1,4 @@
-import * as request from 'supertest';
+import request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../src/app.module';
@@ -37,7 +37,7 @@ describe('E2E: API Endpoints', () => {
           start_time: '2026-07-01T20:00:00Z',
           price_cents: 2500,
         })
-        .expect((res) => {
+        .expect((res: any) => {
           expect([201, 400, 404, 500]).toContain(res.status);
         });
     });
