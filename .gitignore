@@ -7,3 +7,9 @@ openspec/
 .env
 /coverage/
 /src/generated/prisma
+/prisma.config.js
+/prisma.config.d.ts
+/prisma.config.js.map
+/prisma/seed.js
+/prisma/seed.d.ts
+/prisma/seed.js.map
