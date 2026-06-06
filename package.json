@@ -17,9 +17,9 @@
     "test": "jest --selectProjects unit",
     "test:watch": "jest --watch --selectProjects unit",
     "test:cov": "jest --coverage --selectProjects unit",
-    "test:integration": "jest --selectProjects integration",
-    "test:e2e": "jest --selectProjects e2e",
-    "test:concurrency": "jest --selectProjects concurrency",
+    "test:integration": "jest --selectProjects integration --forceExit",
+    "test:e2e": "jest --selectProjects e2e --forceExit",
+    "test:concurrency": "jest --selectProjects concurrency --forceExit",
     "test:all": "jest"
   },
   "devDependencies": {
