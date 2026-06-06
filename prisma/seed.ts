@@ -1,6 +1,9 @@
-import { PrismaClient } from '../src/generated/prisma/client.js';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { PrismaClient } = require('../src/generated/prisma/client.js') as {
+  PrismaClient: new () => any;
+};
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient() as any;
 
 async function main() {
   const movie = await prisma.movie.create({
