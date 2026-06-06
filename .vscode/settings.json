@@ -1,5 +1,9 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.preferences.importModuleSpecifier": "relative",
-  "jest.jestCommandLine": "npx jest"
+  "jest.jestCommandLine": "npx jest",
+  "jest.rootPath": ".",
+  "jest.testExplorer": {
+    "enabled": true
+  }
 }
