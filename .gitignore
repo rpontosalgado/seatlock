@@ -5,4 +5,5 @@ openspec/
 /dist/
 *.tsbuildinfo
 .env
+/coverage/
 /src/generated/prisma
