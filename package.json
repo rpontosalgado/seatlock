@@ -14,10 +14,13 @@
     "build": "nest build",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test": "jest --testPathPatterns=src/",
+    "test:watch": "jest --watch --testPathPatterns=src/",
+    "test:cov": "jest --coverage --testPathPatterns=src/",
+    "test:integration": "jest --config ./test/jest-integration.json",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:concurrency": "jest --config ./test/jest-concurrency.json",
+    "test:all": "npm test && npm run test:integration && npm run test:e2e && npm run test:concurrency"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.2.0",
@@ -68,7 +71,7 @@
       "<rootDir>/test/"
     ],
     "moduleNameMapper": {
-      "^generated/prisma$": "<rootDir>/generated/prisma"
+      "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
     }
   },
   "config": {
