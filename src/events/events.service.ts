@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Kafka, Producer, Admin } from 'kafkajs';
+import { Kafka, Producer, Admin, logLevel } from 'kafkajs';
 
 const TOPICS = [
   'reservation.created',
@@ -26,6 +26,11 @@ export class EventsService implements OnModuleInit, OnModuleDestroy {
       brokers,
       connectionTimeout: 3000,
       requestTimeout: 5000,
+      retry: {
+        initialRetryTime: 100,
+        retries: 2,
+      },
+      logLevel: logLevel.NOTHING,
     });
     this.producer = this.kafka.producer();
     this.admin = this.kafka.admin();
@@ -49,6 +54,7 @@ export class EventsService implements OnModuleInit, OnModuleDestroy {
     } catch (error) {
       this.logger.warn('Kafka unavailable - events will be logged but not published');
       this.connected = false;
+      try { await this.admin.disconnect(); } catch {}
     }
   }
 
