@@ -14,13 +14,13 @@
     "build": "nest build",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "test": "jest --testPathPatterns=src/",
-    "test:watch": "jest --watch --testPathPatterns=src/",
-    "test:cov": "jest --coverage --testPathPatterns=src/",
-    "test:integration": "jest --config ./test/jest-integration.json",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:concurrency": "jest --config ./test/jest-concurrency.json",
-    "test:all": "npm test && npm run test:integration && npm run test:e2e && npm run test:concurrency"
+    "test": "jest --selectProjects unit",
+    "test:watch": "jest --watch --selectProjects unit",
+    "test:cov": "jest --coverage --selectProjects unit",
+    "test:integration": "jest --selectProjects integration",
+    "test:e2e": "jest --selectProjects e2e",
+    "test:concurrency": "jest --selectProjects concurrency",
+    "test:all": "jest"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.2.0",
@@ -51,28 +51,66 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": ".",
-    "testRegex": ".*\\.(spec|e2e-spec)\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "src/**/*.(t|j)s"
-    ],
-    "coverageDirectory": "./coverage",
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/src/",
-      "<rootDir>/test/"
-    ],
-    "moduleNameMapper": {
-      "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
-    }
+    "projects": [
+      {
+        "displayName": "unit",
+        "moduleFileExtensions": ["js", "json", "ts"],
+        "rootDir": ".",
+        "testRegex": ".*\\.spec\\.ts$",
+        "transform": {
+          "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "collectCoverageFrom": ["src/**/*.(t|j)s"],
+        "coverageDirectory": "./coverage",
+        "testEnvironment": "node",
+        "roots": ["<rootDir>/src/"],
+        "moduleNameMapper": {
+          "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
+        }
+      },
+      {
+        "displayName": "integration",
+        "moduleFileExtensions": ["js", "json", "ts"],
+        "rootDir": ".",
+        "testRegex": ".integration.spec.ts$",
+        "transform": {
+          "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "testEnvironment": "node",
+        "roots": ["<rootDir>/test/integration/"],
+        "moduleNameMapper": {
+          "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
+        }
+      },
+      {
+        "displayName": "e2e",
+        "moduleFileExtensions": ["js", "json", "ts"],
+        "rootDir": ".",
+        "testRegex": ".e2e-spec.ts$",
+        "transform": {
+          "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "testEnvironment": "node",
+        "roots": ["<rootDir>/test/e2e/"],
+        "moduleNameMapper": {
+          "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
+        }
+      },
+      {
+        "displayName": "concurrency",
+        "moduleFileExtensions": ["js", "json", "ts"],
+        "rootDir": ".",
+        "testRegex": ".concurrency.spec.ts$",
+        "transform": {
+          "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "testEnvironment": "node",
+        "roots": ["<rootDir>/test/concurrency/"],
+        "moduleNameMapper": {
+          "^(\\.{1,2}/.*)generated/prisma/client\\.js$": "<rootDir>/src/generated/prisma/client.ts"
+        }
+      }
+    ]
   },
   "config": {
     "commitizen": {
