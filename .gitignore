@@ -1,6 +1,3 @@
-PRD.md
-.opencode/
-openspec/
 /node_modules/
 /dist/
 *.tsbuildinfo
