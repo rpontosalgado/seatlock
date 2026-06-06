@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config({ quiet: true });
+
 import request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
@@ -13,10 +16,12 @@ describe('E2E: API Endpoints', () => {
 
     app = module.createNestApplication();
     await app.init();
-  });
+  }, 15000);
 
   afterAll(async () => {
-    await app.close();
+    if (app) {
+      await app.close();
+    }
   });
 
   describe('GET /health', () => {

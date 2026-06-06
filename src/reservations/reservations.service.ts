@@ -48,12 +48,13 @@ export class ReservationsService {
       const expiresAt = new Date(Date.now() + 30_000);
 
       const reservation = await this.prisma.$transaction(async (tx) => {
-        const lockedSeats = await tx.$queryRaw<Array<{ id: string; status: string }>>`
-          SELECT id, status FROM seats
-          WHERE id = ANY(${sortedSeatIds}::uuid[])
-          ORDER BY id ASC
-          FOR UPDATE
-        `;
+        const lockedSeats = await tx.$queryRawUnsafe<Array<{ id: string; status: string }>>(
+          `SELECT id, status FROM seats
+           WHERE id::text = ANY($1::text[])
+           ORDER BY id ASC
+           FOR UPDATE`,
+          sortedSeatIds,
+        );
 
         for (const seat of lockedSeats) {
           if (seat.status !== SeatStatus.available) {
