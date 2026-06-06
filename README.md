@@ -8,14 +8,20 @@ Distributed cinema ticket sales system with concurrency-safe seat reservations. 
 # Install dependencies
 npm install
 
+# Copy environment variables
+cp .env.example .env
+
+# Start infrastructure (PostgreSQL, Redis, Kafka)
+docker compose up -d postgres redis zookeeper kafka
+
 # Generate Prisma Client
 npx prisma generate
 
-# Start infrastructure
-docker-compose up -d
-
 # Run migrations
-npx prisma migrate dev --name init
+npx prisma migrate deploy
+
+# Seed the database
+npx prisma db seed
 
 # Start development server
 npm run start:dev
@@ -64,12 +70,13 @@ seatlock/
 ├── Dockerfile
 ├── prisma/
 │   ├── schema.prisma          # Database schema (single source of truth)
-│   └── seed.ts                # Sample data
+│   ├── seed.ts                # Sample data
+│   └── migrations/            # Prisma migrations
 ├── src/
 │   ├── main.ts                # Entry point
 │   ├── app.module.ts          # Root module
 │   ├── config/                # Environment configuration
-│   ├── database/              # PrismaService + PrismaModule
+│   ├── database/              # PrismaService + PrismaModule + test mocks
 │   ├── sessions/              # Session CRUD + seat generation
 │   ├── reservations/          # Two-phase locking reservation logic
 │   ├── payments/              # Payment confirmation
@@ -77,12 +84,11 @@ seatlock/
 │   ├── events/                # Kafka producers, DLQ consumer
 │   ├── expiry-worker/         # Background reservation expiry sweep
 │   ├── logger/                # Structured JSON logger
-│   └── health/               # Health check endpoint
+│   └── health/                # Health check endpoint
 └── test/
-    ├── fixtures/              # Test helpers
-    ├── integration/           # Integration tests
-    ├── concurrency/           # Concurrency tests
-    └── e2e/                   # End-to-end tests
+    ├── integration/           # Integration tests (need Docker)
+    ├── concurrency/           # Concurrency tests (need Docker)
+    └── e2e/                   # End-to-end tests (need Docker)
 ```
 
 ## Configuration
@@ -101,10 +107,14 @@ seatlock/
 |--------|-------------|
 | `npm run start:dev` | Start dev server with watch |
 | `npm run build` | Build for production |
-| `npm run test` | Run unit tests |
-| `npm run test:e2e` | Run end-to-end tests |
+| `npm test` | Run unit tests (no Docker needed) |
+| `npm run test:integration` | Run integration tests (needs Docker) |
+| `npm run test:e2e` | Run end-to-end tests (needs Docker) |
+| `npm run test:concurrency` | Run concurrency tests (needs Docker) |
+| `npm run test:all` | Run all test suites |
 | `npm run lint` | Lint and fix |
 | `npm run migrate:deploy` | Run Prisma migrations |
+| `npx prisma db seed` | Seed the database |
 
 ## Commit Convention
 
